@@ -19,10 +19,10 @@ from flask_gravatar import Gravatar
 
 #----------------------------- Constants -------------------------------------#
 
-API_ENDPOINT = "https://api.npoint.io/43644ec4f0013682fc0d"
-MY_EMAIL = "Email"
+
+MY_EMAIL = "EMAIL"
 PASSWORD = "PASSWORD"
-EMAIL_RECIEVER_ADRESS = ""
+EMAIL_RECIEVER_ADRESS = "RECIEVER"
 YEAR = datetime.now().strftime("%Y")
 
 #----------------------------- App config.-------------------------------------#
