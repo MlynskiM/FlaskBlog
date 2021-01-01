@@ -20,7 +20,7 @@ import os
 
 #----------------------------- Constants -------------------------------------#
 
-
+CHAR_ENCODE="iso-8859-2"
 MY_EMAIL = os.environ.get("EMAIL")
 PASSWORD = os.environ.get("PASSWORD")
 EMAIL_RECIEVER_ADRESS = os.environ.get("RECIEVER")
@@ -122,23 +122,21 @@ def get_all_posts():
 @app.route('/contact', methods=["POST", "GET"])
 def contact_us():
     """Sending Email"""
-
-
-    if request.method == 'POST':
-        data = request.form
-        
-
-        with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
-            connection.starttls()
-            connection.login(user = MY_EMAIL, password=PASSWORD)
-            connection.sendmail(
-                from_addr = MY_EMAIL,
-                to_addrs= EMAIL_RECIEVER_ADRESS,
-                msg = f"Subject:Contact Form from {data['name']}\n\nPhone Number : {data['phonenumber']}\nEmail: {data['email']}\n\n{data['message']}"
-            )
-        return render_template('contact.html', title = "Successfully sent your message" , year = YEAR, current_user=current_user)
-    else:
-        return render_template('contact.html', title = "Contact Me" , year = YEAR, current_user=current_user)
+    form = ContactForm()
+    
+    if form.validate_on_submit():
+            
+            with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
+                connection.starttls()
+                connection.login(user = MY_EMAIL, password=PASSWORD)
+                connection.sendmail(
+                    from_addr = MY_EMAIL,
+                    to_addrs= EMAIL_RECIEVER_ADRESS,
+                    msg = f"Subject:Contact Form from: {form.name.data}\n\nPhone Number : {form.phone.data}\nEmail: {form.email.data}\n\nMessage:{form.message.data}".encode(CHAR_ENCODE)
+                )
+            return render_template('contact.html', title = "Successfully sent your message" , year = YEAR, current_user=current_user, form = form)
+    
+    return render_template('contact.html', title = "Contact Me" , year = YEAR, current_user=current_user, form=form)
 
 
 
@@ -295,6 +293,9 @@ def delete_post(post_id):
     db.session.commit()
 
     return redirect(url_for('get_all_posts'))
+
+
+
 
 
 

@@ -44,21 +44,23 @@
 
 
               <div class="col-lg-12 col-md-10 mx-auto comment">
-                  {% for comment in post.comments: %}
-                  <ul class="commentList text-left list-inline">
-                      <li>
-                          <div class="commenterImage">
-                              <img src="{{ comment.comment_author.email | gravatar }}"/>
-                              
-                          </div>
-                          <div class="commentText">
-                              {{comment.text|safe}}
-                              <span class="date sub-text">{{comment.comment_author.name}}</span>
-
-                          </div>
-                      </li>
-                  </ul>
-                  {% endfor %}
+                
+                    {% for comment in post.comments: %}
+                      <div class="card border-secondary mb-3">
+                        <blockquote class="blockquote mb-0 card-body">
+                          <p>{{comment.text|safe}}</p>
+                          <p class="blockquote-footer">
+                            <small class="text-muted">
+                              Commented by <cite title="Source Title">{{comment.comment_author.name}}     </cite>
+                            </small>
+                            <a href="#" class="btn-outline-secondary">✘</a> 
+                          </p>
+                        </blockquote>
+                        
+                      </div>
+                      {% endfor %}
+                  
+                  
               </div>
 
 
